@@ -1,0 +1,239 @@
+{
+  "recorded_at_utc": "2026-10-13T22:36:54.816916+00:00",
+  "git_commit": "316ae5305671a43f8b8e63b50fe692046d550b01",
+  "git_dirty": true,
+  "generator_sha256": "fad3d5151fedc7f1f305bbfb0525648a940af696ff963d45ac340535339c698c",
+  "binary_build_info": {
+    "dispatcher": "<project>/bin/dispatcher: go1.27.2-X:nodwarf5\n\tpath\thookrelay/cmd/dispatcher\n\tmod\thookrelay\tv0.0.0-20261013220146-316ae5305671+dirty\t\n\tdep\tgithub.com/beorn7/perks\tv1.0.1\th1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=\n\tdep\tgithub.com/cespare/xxhash/v2\tv2.3.0\th1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=\n\tdep\tgithub.com/dustin/go-humanize\tv1.0.1\th1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=\n\tdep\tgithub.com/google/uuid\tv1.6.0\th1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=\n\tdep\tgithub.com/munnerz/goautoneg\tv0.0.0-20191010083416-a7dc8b61c822\th1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=\n\tdep\tgithub.com/prometheus/client_golang\tv1.25.0\th1:cDtW1TcFsMi1RJc8khwCKB4VhzwV04aKqbYtNOXuiK0=\n\tdep\tgithub.com/prometheus/client_model\tv0.6.3\th1:O0jaTVAYNxTHYInEPFJt5I3+sN8zqBtVMPTB1qyxiEo=\n\tdep\tgithub.com/prometheus/common\tv0.72.0\th1:tAYsE+sPJxIncDAobm4H5aQjmox9ZxEIIqPbiffa8G4=\n\tdep\tgithub.com/prometheus/procfs\tv0.22.0\th1:6q9+/JL9IKAPbCmBrv9n5O5Ty3NKnciV5X7YGw0oics=\n\tdep\tgithub.com/remyoudompheng/bigfft\tv0.0.0-20230129092748-24d4a6f8daec\th1:W09IVJc94icq4NjY3clb7Lk8O1qJ8BdBEF8z0ibU0rE=\n\tdep\tgolang.org/x/sys\tv0.48.0\th1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=\n\tdep\tgoogle.golang.org/protobuf\tv1.36.12\th1:pJOKDDOyeXErUroCihFAd5LQuwXBSpVnKGrj5o/fwxc=\n\tdep\tmodernc.org/libc\tv1.77.1\th1:Ct8j47QtiZ1Enj2DtFXQtUqrPCAjdCmPjtCuvrYQ0Hs=\n\tdep\tmodernc.org/mathutil\tv1.7.1\th1:GCZVGXdaN8gTqB1Mf/usp1Y/hSqgI2vAGGP4jZMCxOU=\n\tdep\tmodernc.org/memory\tv1.12.1\th1:nFMiWrpStgZczNl6XI9GnIk/rWhYIyHGUaR04pGbp9g=\n\tdep\tmodernc.org/sqlite\tv1.60.1\th1:/blz53O951KWFOso4QQvEs/Fq6cDBKLtMVrYNSeJVKw=\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=amd64\n\tbuild\tGOEXPERIMENT=nodwarf5\n\tbuild\tGOOS=linux\n\tbuild\tGOAMD64=v1\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=316ae5305671a43f8b8e63b50fe692046d550b01\n\tbuild\tvcs.time=2026-10-13T22:01:46Z\n\tbuild\tvcs.modified=true",
+    "receiver": "<project>/bin/receiver: go1.27.2-X:nodwarf5\n\tpath\thookrelay/cmd/receiver\n\tmod\thookrelay\tv0.0.0-20261013220146-316ae5305671+dirty\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=amd64\n\tbuild\tGOEXPERIMENT=nodwarf5\n\tbuild\tGOOS=linux\n\tbuild\tGOAMD64=v1\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=316ae5305671a43f8b8e63b50fe692046d550b01\n\tbuild\tvcs.time=2026-10-13T22:01:46Z\n\tbuild\tvcs.modified=true"
+  },
+  "binary_sha256": {
+    "dispatcher": "e433d0a3bc5d518f1e46b0162742e80ac3ff2a80fe45588aeefa30710a315b54",
+    "receiver": "96afa483430c7dcbb58a9ac584ebb3dd7f23546f7ac59ee793362983733d0234"
+  },
+  "environment": {
+    "kernel": "7.2.9-arch1-1",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 5 7520U with Radeon Graphics",
+    "logical_cpus": 8,
+    "allowed_cpus": 8,
+    "memory": "MemTotal:       15668096 kB",
+    "go": "go version go1.27.2-X:nodwarf5 linux/amd64",
+    "python": "3.14.8",
+    "sqlite_driver": "modernc.org/sqlite v1.60.1",
+    "filesystem": "btrfs",
+    "data_directory": "<project>/work/benchmarks",
+    "durability": "WAL + synchronous FULL",
+    "receiver": "Go test receiver, HMAC verified, 204, no artificial delay; request logging enabled",
+    "http": "Python urllib, new connections; API loopback; outgoing keepalive disabled; no retries by load generator"
+  },
+  "measurement_notes": [
+    "Single run per concurrency; not a production SLO or maximum capacity.",
+    "Generator, receiver, dispatcher and sampler share one machine; caches and ambient load uncontrolled.",
+    "CPU percentages use one core=100%; RSS/queue peaks sampled, not absolute peaks.",
+    "Read-only SQLite queue polling every 0.1s adds observer load; periodic scrapes are additional load.",
+    "Go worker sends eligible events consecutively; polls every 0.1s only when no work is eligible.",
+    "Drain completion sampled every 0.1s; end-to-end latency uses wall-clock milliseconds from SQLite.",
+    "Disk reports apparent size and st_blocks allocation, not write amplification nor complete Btrfs physical accounting.",
+    "Publication throughput is a short burst rate; sustained publication capacity not measured.",
+    "Scrapes after drain read a retained dataset; no inference about much larger datasets."
+  ],
+  "cases": [
+    {
+      "publication_concurrency": 1,
+      "outbound_workers": 1,
+      "events": 200,
+      "payload_bytes_per_event": 1024,
+      "publication_body_bytes": 1087,
+      "publication_codes": {
+        "202": 200
+      },
+      "publication_seconds": 1.8520676589978393,
+      "accepted_per_second": 107.9874155937806,
+      "publication_http_latency": {
+        "count": 200,
+        "min_ms": 2.8161899972474203,
+        "mean_ms": 8.981867554794007,
+        "p50_ms": 7.302774996787775,
+        "p95_ms": 16.381057997932658,
+        "p99_ms": 21.728543004428502,
+        "max_ms": 75.72505699499743
+      },
+      "drain_seconds_after_publication": 0.5031332400030806,
+      "total_seconds_until_drained": 2.35520089900092,
+      "successes_per_second_until_drained": 84.91844584673873,
+      "delivery_publication_to_terminal_latency": {
+        "count": 200,
+        "min_ms": 40.0,
+        "mean_ms": 296.61,
+        "p50_ms": 299.0,
+        "p95_ms": 545.0,
+        "p99_ms": 555.0,
+        "max_ms": 560.0
+      },
+      "attempt_codes": {
+        "204": 200
+      },
+      "queue_sample_peak": 49,
+      "queue_sample_oldest_age_peak_seconds": 0.5513403415679932,
+      "resource_sample_interval_seconds": 0.1,
+      "queue_sample_count": 24,
+      "resources": {
+        "dispatcher": {
+          "peak_rss_bytes": 28966912,
+          "cpu_seconds": 1.57,
+          "mean_cpu_percent_one_core": 66.6609799896899
+        },
+        "receiver": {
+          "peak_rss_bytes": 14389248,
+          "cpu_seconds": 0.17,
+          "mean_cpu_percent_one_core": 7.218067896972793
+        }
+      },
+      "scrape_interval_seconds": 1.0,
+      "scrape_during_load_latency": {
+        "count": 2,
+        "min_ms": 6.006534997140989,
+        "mean_ms": 10.058652998850448,
+        "p50_ms": 6.006534997140989,
+        "p95_ms": 14.110771000559907,
+        "p99_ms": 14.110771000559907,
+        "max_ms": 14.110771000559907
+      },
+      "scrape_after_drain_latency": {
+        "count": 20,
+        "min_ms": 3.508136003802065,
+        "mean_ms": 7.090534650706104,
+        "p50_ms": 6.545102995005436,
+        "p95_ms": 12.084660003893077,
+        "p99_ms": 14.14338900212897,
+        "max_ms": 14.14338900212897
+      },
+      "disk_before_shutdown": {
+        "db": {
+          "logical_bytes": 512000,
+          "allocated_bytes": 512000
+        },
+        "db-wal": {
+          "logical_bytes": 4181832,
+          "allocated_bytes": 4182016
+        },
+        "db-shm": {
+          "logical_bytes": 32768,
+          "allocated_bytes": 32768
+        },
+        "total_logical_bytes": 4726600,
+        "total_allocated_bytes": 4726784
+      },
+      "disk_after_graceful_shutdown": {
+        "db": {
+          "logical_bytes": 512000,
+          "allocated_bytes": 512000
+        },
+        "total_logical_bytes": 512000,
+        "total_allocated_bytes": 512000
+      },
+      "python_sqlite_version": "3.54.0",
+      "schema_version": 4,
+      "assertions": "all publications accepted; one finalized HTTP 204 attempt per event; integrity/FK valid"
+    },
+    {
+      "publication_concurrency": 8,
+      "outbound_workers": 1,
+      "events": 200,
+      "payload_bytes_per_event": 1024,
+      "publication_body_bytes": 1087,
+      "publication_codes": {
+        "202": 200
+      },
+      "publication_seconds": 1.1590502880062559,
+      "accepted_per_second": 172.555066910885,
+      "publication_http_latency": {
+        "count": 200,
+        "min_ms": 4.650158996810205,
+        "mean_ms": 45.084408550137596,
+        "p50_ms": 37.41569699923275,
+        "p95_ms": 98.15741199417971,
+        "p99_ms": 135.83537399972556,
+        "max_ms": 153.27639199676923
+      },
+      "drain_seconds_after_publication": 1.2040288029966177,
+      "total_seconds_until_drained": 2.3630790910028736,
+      "successes_per_second_until_drained": 84.63533902080334,
+      "delivery_publication_to_terminal_latency": {
+        "count": 200,
+        "min_ms": 103.0,
+        "mean_ms": 948.695,
+        "p50_ms": 944.0,
+        "p95_ms": 1176.0,
+        "p99_ms": 1202.0,
+        "max_ms": 1209.0
+      },
+      "attempt_codes": {
+        "204": 200
+      },
+      "queue_sample_peak": 174,
+      "queue_sample_oldest_age_peak_seconds": 1.2008681297302246,
+      "resource_sample_interval_seconds": 0.1,
+      "queue_sample_count": 24,
+      "resources": {
+        "dispatcher": {
+          "peak_rss_bytes": 28946432,
+          "cpu_seconds": 1.6099999999999999,
+          "mean_cpu_percent_one_core": 68.13144791174669
+        },
+        "receiver": {
+          "peak_rss_bytes": 14372864,
+          "cpu_seconds": 0.16,
+          "mean_cpu_percent_one_core": 6.770827121664268
+        }
+      },
+      "scrape_interval_seconds": 1.0,
+      "scrape_during_load_latency": {
+        "count": 2,
+        "min_ms": 9.63850400148658,
+        "mean_ms": 10.884874500334263,
+        "p50_ms": 9.63850400148658,
+        "p95_ms": 12.131244999181945,
+        "p99_ms": 12.131244999181945,
+        "max_ms": 12.131244999181945
+      },
+      "scrape_after_drain_latency": {
+        "count": 20,
+        "min_ms": 2.437563001876697,
+        "mean_ms": 3.3458424000855302,
+        "p50_ms": 3.326260994072072,
+        "p95_ms": 4.255678002664354,
+        "p99_ms": 4.286689996661153,
+        "max_ms": 4.286689996661153
+      },
+      "disk_before_shutdown": {
+        "db": {
+          "logical_bytes": 516096,
+          "allocated_bytes": 516096
+        },
+        "db-wal": {
+          "logical_bytes": 4148872,
+          "allocated_bytes": 4149248
+        },
+        "db-shm": {
+          "logical_bytes": 32768,
+          "allocated_bytes": 32768
+        },
+        "total_logical_bytes": 4697736,
+        "total_allocated_bytes": 4698112
+      },
+      "disk_after_graceful_shutdown": {
+        "db": {
+          "logical_bytes": 516096,
+          "allocated_bytes": 516096
+        },
+        "total_logical_bytes": 516096,
+        "total_allocated_bytes": 516096
+      },
+      "python_sqlite_version": "3.54.0",
+      "schema_version": 4,
+      "assertions": "all publications accepted; one finalized HTTP 204 attempt per event; integrity/FK valid"
+    }
+  ]
+}

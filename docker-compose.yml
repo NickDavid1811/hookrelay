@@ -1,0 +1,31 @@
+# Local demonstration only. Production requires operator-owned config/secrets and TLS.
+services:
+  dispatcher:
+    build: .
+    image: hookrelay:local
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      HOOKRELAY_TOKEN: ${HOOKRELAY_TOKEN:-local-token-change-me}
+      HOOKRELAY_SECRET: ${HOOKRELAY_SECRET:-local-secret-change-me}
+      HOOKRELAY_METRICS_TOKEN: ${HOOKRELAY_METRICS_TOKEN:-metrics-token-change-me}
+    command: ["--listen", "0.0.0.0:8080", "--insecure-allow-remote-listen", "--allow-loopback-test", "--endpoint", "http://127.0.0.1:9090/webhook", "--db", "/data/hookrelay.db", "--workers", "4", "--max-attempts", "5"]
+    volumes:
+      - hookrelay-data:/data
+  receiver:
+    image: hookrelay:local
+    network_mode: "service:dispatcher"
+    depends_on:
+      dispatcher:
+        condition: service_healthy
+    entrypoint: ["/usr/local/bin/receiver"]
+    command: ["--listen", "127.0.0.1:9090", "--fail-first", "0"]
+    environment:
+      HOOKRELAY_SECRET: ${HOOKRELAY_SECRET:-local-secret-change-me}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9090/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+volumes:
+  hookrelay-data:

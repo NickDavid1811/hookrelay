@@ -1,0 +1,721 @@
+openapi: 3.1.0
+info:
+  description: HookRelay accepts events atomically and dispatches signed webhooks using Go and SQLite. Delivery uses finite retry budgets and recoverable leases. Duplicate sends are possible; HTTP acceptance does not establish receiver business completion. Documentation reviewed on 2026-10-16 against code reference 35c4373.
+  title: HookRelay API
+  version: 1.0.0
+servers:
+  - description: Local Dispatcher Instance
+    url: http://127.0.0.1:8080
+security:
+  - BearerAuth: []
+paths:
+  /api/v1/deliveries/{id}:
+    get:
+      description: Retrieves the current execution state and latest attempt metrics for a delivery.
+      operationId: getDelivery
+      parameters:
+        - description: The 32-character hexadecimal delivery ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResult'
+          description: Current delivery status details.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Delivery not found or not owned by the authenticated client.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable.
+      summary: Query delivery status
+  /api/v1/deliveries/{id}/attempts:
+    get:
+      description: Returns committed history in ascending order, at most 100 records per page. after is exclusive; continue with the last returned number or cycle until an empty array. Pages are not a cross-request snapshot.
+      operationId: getDeliveryAttempts
+      parameters:
+        - description: The delivery ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: Cursor indicating the last attempt number seen (for pagination).
+          in: query
+          name: after
+          required: false
+          schema:
+            default: 0
+            minimum: 0
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AttemptRecord'
+                type: array
+          description: List of execution attempts (up to 100 entries).
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid after cursor; expected a nonnegative integer.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Delivery not found.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable.
+      summary: Query delivery attempts history
+  /api/v1/deliveries/{id}/replay:
+    post:
+      description: Re-enqueues a DEAD delivery into a new execution cycle. Requires matching `expected_cycle`.
+      operationId: replayDelivery
+      parameters:
+        - description: The delivery ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplayRequest'
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResult'
+          description: Replay accepted and delivery enqueued in PENDING state.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid replay JSON, unknown fields, invalid expected_cycle/reason or body exceeding 1024 bytes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Delivery not found.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Delivery is not in DEAD state, expected_cycle mismatched, or maximum cycles reached.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client capacity reached.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable or global capacity reached.
+      summary: Replay a DEAD delivery
+  /api/v1/deliveries/{id}/replays:
+    get:
+      description: Returns committed history in ascending order, at most 100 records per page. after is exclusive; continue with the last returned number or cycle until an empty array. Pages are not a cross-request snapshot.
+      operationId: getDeliveryReplays
+      parameters:
+        - description: The delivery ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: Cursor indicating the last cycle number seen.
+          in: query
+          name: after
+          required: false
+          schema:
+            default: 0
+            minimum: 0
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ReplayRecord'
+                type: array
+          description: List of replay audit records.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid after cursor; expected a nonnegative integer.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Delivery not found.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable.
+      summary: Query replay audit trail
+  /api/v1/endpoints:
+    get:
+      description: Returns up to 1000 active endpoints owned by this client, sorted by ID. Pass the last returned ID as after; continue until an empty array. Concurrent changes are not a snapshot.
+      operationId: listEndpoints
+      parameters:
+        - description: Exclusive endpoint ID cursor (lexical SQLite BINARY order); omit for first page.
+          in: query
+          name: after
+          required: false
+          schema:
+            default: ""
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/EndpointRecord'
+                type: array
+          description: List of endpoints.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable.
+      summary: List endpoints
+    post:
+      description: Registers a destination atomically in SQLite. Dynamic destinations are resolved from committed storage at dispatch time. Exactly one JSON object; unknown fields rejected.
+      operationId: createEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEndpointRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointCreatedResponse'
+          description: Endpoint registered and persisted successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid endpoint JSON, unknown fields, invalid ID/URL/secret, blocked destination or body exceeding 65536 bytes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The endpoint identifier already exists or conflicts with retained ownership.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client capacity reached.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable or global capacity reached.
+      summary: Register dynamic endpoint
+  /api/v1/endpoints/{id}:
+    delete:
+      description: Deactivates an API-managed endpoint if it has no unfinished deliveries. Configuration-owned endpoints return 409; remove them from configuration and restart. Terminal history remains until retention cleanup.
+      operationId: deleteEndpoint
+      parameters:
+        - description: The endpoint ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Endpoint deactivated successfully.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Endpoint not found or belongs to another client.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Configuration-managed endpoint or unfinished deliveries; remove a static endpoint from configuration and restart.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable or global capacity reached.
+      summary: Delete or deactivate an endpoint
+    get:
+      description: Returns the configuration details (id and destination url) of a specific active endpoint owned by the authenticated client.
+      operationId: getEndpoint
+      parameters:
+        - description: The endpoint ID.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointRecord'
+          description: Endpoint details.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Endpoint not found or belongs to another client.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage unavailable.
+      summary: Retrieve an endpoint
+  /api/v1/publish:
+    post:
+      description: Commits event, delivery and idempotency receipt atomically. The fingerprint covers the complete original request bytes. Identical retries return the initial acceptance receipt, not current delivery state. Retention deletes the key with its event.
+      operationId: publishEvent
+      parameters:
+        - description: Client idempotency key, 1 to 128 UTF-8 bytes. Retained only while its event is retained. SHA-256 compares the complete original request bytes.
+          in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicationRequest'
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResult'
+          description: Event accepted and delivery enqueued.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Malformed JSON, missing fields, or invalid key.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Missing or invalid authorization token.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource unavailable to this client, or endpoint disabled.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: The same client key was reused with different complete request bytes.
+        "413":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Entire publication body exceeds 65536 bytes.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Client pending queue capacity reached.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Global queue or storage limit reached, or database unavailable.
+      summary: Publish an event
+  /healthz:
+    get:
+      description: Basic liveness check for container orchestrators.
+      operationId: livenessCheck
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    example: ok
+                    type: string
+                type: object
+          description: Service process is running.
+      security: []
+      summary: Liveness probe
+  /metrics:
+    get:
+      description: Exposes Prometheus operational metrics in standard exposition text format.
+      operationId: getMetrics
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Prometheus metrics in text/plain format.
+        "401":
+          description: Missing or invalid metrics operator token.
+        "404":
+          description: Metrics endpoint disabled (metrics token not configured).
+        "500":
+          description: Metrics collection failed; the Prometheus handler returns plain text.
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+        - BearerMetricsAuth: []
+      summary: Prometheus metrics
+  /readyz:
+    get:
+      description: Checks SQLite connection availability via Ping only; does not establish worker progress, database writability, disk capacity, or receiver availability.
+      operationId: readinessCheck
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    example: ready
+                    type: string
+                type: object
+          description: Service is healthy and connected to storage.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Storage connection unavailable.
+      security: []
+      summary: Readiness probe
+components:
+  schemas:
+    AttemptRecord:
+      properties:
+        completed_unix_ms:
+          description: UTC epoch timestamp in milliseconds when the attempt completed.
+          example: 1792081015272
+          type: integer
+        cycle:
+          description: Cycle in which this attempt was performed.
+          example: 1
+          type: integer
+        error:
+          description: Sanitized error description.
+          example: transport failure
+          type: string
+        http_status:
+          description: HTTP status code received (0 if network/timeout error).
+          example: 503
+          type: integer
+        number:
+          description: Global sequential number of a committed finalization, not every network send started.
+          example: 1
+          type: integer
+      type: object
+      required:
+        - number
+        - cycle
+        - http_status
+        - error
+        - completed_unix_ms
+    CreateEndpointRequest:
+      additionalProperties: false
+      properties:
+        allow_loopback:
+          default: false
+          description: Test-only loopback destination; also requires operator --allow-loopback-test permission.
+          type: boolean
+        allow_loopback_test:
+          default: false
+          description: Compatibility alias for allow_loopback; either true enables the request flag, subject to operator permission.
+          type: boolean
+        id:
+          description: Custom ASCII endpoint ID, maximum 64 bytes. Empty or omitted generates an ID.
+          example: payments-webhook
+          maxLength: 64
+          pattern: ^[A-Za-z0-9_-]*$
+          type: string
+        secret:
+          description: 'HMAC secret: 16 to 4096 UTF-8 bytes when provided. Empty or omitted generates a secret.'
+          example: hrsec_sample_secret_key_1234567890abcdef
+          type: string
+        url:
+          description: Destination webhook URL (HTTPS port 443 required in production).
+          example: https://api.example.com/webhooks/payments
+          type: string
+      required:
+        - url
+      type: object
+    DeliveryResult:
+      properties:
+        attempts:
+          description: Total committed attempt finalizations across all cycles; interrupted sends may be absent.
+          example: 2
+          type: integer
+          minimum: 0
+        cycle:
+          description: Current attempt cycle number (starts at 1).
+          example: 1
+          type: integer
+          minimum: 1
+        cycle_attempts:
+          description: Committed attempt finalizations in the current cycle.
+          example: 2
+          type: integer
+          minimum: 0
+        delivery_id:
+          example: e41fc76a5912448ca83d5bc781abcdef
+          type: string
+        error:
+          description: Error message if the last attempt failed.
+          example: ""
+          type: string
+        event_id:
+          example: d82abf71b96a4bc2a981a6e76c123456
+          type: string
+        http_status:
+          description: Latest recorded HTTP status; zero when no response status is available.
+          example: 204
+          type: integer
+        status:
+          enum:
+            - PENDING
+            - RETRYING
+            - PROCESSING
+            - SUCCESS
+            - DEAD
+          example: SUCCESS
+          type: string
+      type: object
+      required:
+        - event_id
+        - delivery_id
+        - status
+        - attempts
+        - cycle
+        - cycle_attempts
+        - http_status
+    EndpointCreatedResponse:
+      properties:
+        id:
+          example: payments-webhook
+          type: string
+        secret:
+          description: Assigned HMAC secret returned by this creation response only. Persisted dynamic secrets and backups contain plaintext; protect them.
+          example: hrsec_sample_secret_key_1234567890abcdef
+          type: string
+        url:
+          example: https://api.example.com/webhooks/payments
+          type: string
+      type: object
+      required:
+        - id
+        - url
+        - secret
+    EndpointRecord:
+      properties:
+        id:
+          example: test
+          type: string
+        url:
+          example: https://api.example.com/webhooks
+          type: string
+      type: object
+      required:
+        - id
+        - url
+    ErrorResponse:
+      properties:
+        error:
+          example: invalid publication
+          type: string
+      type: object
+      required:
+        - error
+    PublicationRequest:
+      additionalProperties: false
+      description: Exactly one JSON object. Entire HTTP body, including envelope and whitespace, is limited to 65536 bytes. Unknown fields are rejected.
+      properties:
+        endpoint_id:
+          description: Identifier of the target endpoint.
+          example: invoice-webhook
+          type: string
+          minLength: 1
+        event_type:
+          description: Event category, 1 to 128 UTF-8 bytes.
+          example: invoice.paid
+          type: string
+          minLength: 1
+        payload:
+          description: Any JSON value, including null, array, scalar, or object. Limited by the entire publication body ceiling.
+          example:
+            amount: 250
+            currency: USD
+            invoice_id: inv_10029
+      required:
+        - endpoint_id
+        - event_type
+        - payload
+      type: object
+    ReplayRecord:
+      properties:
+        actor:
+          description: Identifier of the authenticated client who initiated the replay.
+          example: local-client
+          type: string
+        cycle:
+          description: Newly opened cycle number.
+          example: 2
+          type: integer
+        reason:
+          description: Reason provided during the replay request.
+          example: Destination recovered
+          type: string
+        requested_unix_ms:
+          description: Timestamp in UTC epoch milliseconds when the replay was requested.
+          example: 1792081030000
+          type: integer
+      type: object
+      required:
+        - cycle
+        - actor
+        - reason
+        - requested_unix_ms
+    ReplayRequest:
+      additionalProperties: false
+      properties:
+        expected_cycle:
+          description: Expected current cycle of the DEAD delivery (prevents race conditions).
+          example: 1
+          minimum: 1
+          type: integer
+        reason:
+          description: Optional operator reason, at most 256 UTF-8 bytes.
+          example: Destination service recovered from maintenance.
+          type: string
+      required:
+        - expected_cycle
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: Client authentication bearer token (16 to 4096 bytes).
+      scheme: bearer
+      type: http
+    BearerMetricsAuth:
+      description: Dedicated operator bearer token for scraping Prometheus metrics.
+      scheme: bearer
+      type: http

@@ -1,0 +1,721 @@
+openapi: 3.1.0
+info:
+  description: HookRelay acepta eventos atómicamente y envía webhooks firmados con Go y SQLite. Usa intentos finitos y reservas recuperables. Puede duplicar envíos; aceptación HTTP no demuestra procesamiento de negocio. Documentación revisada el 2026-10-16 contra el código 35c4373.
+  title: API de HookRelay
+  version: 1.0.0
+servers:
+  - description: Instancia local del dispatcher
+    url: http://127.0.0.1:8080
+security:
+  - BearerAuth: []
+paths:
+  /api/v1/deliveries/{id}:
+    get:
+      description: Consulta estado actual y datos del último intento de una entrega.
+      operationId: getDelivery
+      parameters:
+        - description: ID de entrega de 32 caracteres hexadecimales.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResult'
+          description: Detalles del estado actual de entrega.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Entrega inexistente o de otro cliente.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible.
+      summary: Consultar estado de entrega
+  /api/v1/deliveries/{id}/attempts:
+    get:
+      description: Devuelve historial confirmado ascendente, hasta 100 registros por página. after es exclusivo; continuar con el último número o ciclo hasta array vacío. Las páginas no son un snapshot entre solicitudes.
+      operationId: getDeliveryAttempts
+      parameters:
+        - description: ID de entrega.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: Cursor con el último número de intento recibido.
+          in: query
+          name: after
+          required: false
+          schema:
+            default: 0
+            minimum: 0
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AttemptRecord'
+                type: array
+          description: Lista de intentos (hasta 100 registros).
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Cursor after inválido; se exige entero no negativo.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Entrega no encontrada.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible.
+      summary: Consultar historial de intentos
+  /api/v1/deliveries/{id}/replay:
+    post:
+      description: Vuelve a encolar una entrega DEAD en un nuevo ciclo. Requiere expected_cycle coincidente.
+      operationId: replayDelivery
+      parameters:
+        - description: ID de entrega.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplayRequest'
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResult'
+          description: Replay aceptado; entrega encolada en PENDING.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: JSON de replay inválido, campos desconocidos, expected_cycle/reason inválidos o cuerpo mayor a 1024 bytes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Entrega no encontrada.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No está DEAD, expected_cycle no coincide o se alcanzó el máximo de ciclos.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Capacidad del cliente agotada.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible o capacidad global agotada.
+      summary: Reenviar una entrega DEAD
+  /api/v1/deliveries/{id}/replays:
+    get:
+      description: Devuelve historial confirmado ascendente, hasta 100 registros por página. after es exclusivo; continuar con el último número o ciclo hasta array vacío. Las páginas no son un snapshot entre solicitudes.
+      operationId: getDeliveryReplays
+      parameters:
+        - description: ID de entrega.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - description: Cursor con el último ciclo recibido.
+          in: query
+          name: after
+          required: false
+          schema:
+            default: 0
+            minimum: 0
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ReplayRecord'
+                type: array
+          description: Registros de auditoría de replay.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Cursor after inválido; se exige entero no negativo.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Entrega no encontrada.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible.
+      summary: Consultar auditoría de replay
+  /api/v1/endpoints:
+    get:
+      description: Devuelve hasta 1000 endpoints activos del cliente ordenados por ID. Usar el último ID como after hasta array vacío. Los cambios concurrentes no forman un snapshot.
+      operationId: listEndpoints
+      parameters:
+        - description: Cursor exclusivo por ID (orden léxico SQLite BINARY); omitir en primera página.
+          in: query
+          name: after
+          required: false
+          schema:
+            default: ""
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/EndpointRecord'
+                type: array
+          description: Lista de endpoints.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible.
+      summary: Listar endpoints
+    post:
+      description: Registra destino atómicamente en SQLite. Los dinámicos se resuelven desde datos confirmados al enviar. Un objeto JSON; rechaza campos desconocidos.
+      operationId: createEndpoint
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEndpointRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointCreatedResponse'
+          description: Endpoint registrado y persistido.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: JSON inválido, campos desconocidos, ID/URL/secreto inválidos, destino bloqueado o cuerpo mayor a 65536 bytes.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: El ID ya existe o entra en conflicto con un propietario retenido.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Capacidad del cliente agotada.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible o capacidad global agotada.
+      summary: Registrar endpoint dinámico
+  /api/v1/endpoints/{id}:
+    delete:
+      description: Desactiva endpoint administrado por API sin entregas pendientes. Los de configuración devuelven 409; retirarlos del archivo y reiniciar. Conserva historial terminal hasta retención.
+      operationId: deleteEndpoint
+      parameters:
+        - description: ID de endpoint.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Endpoint desactivado.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Endpoint inexistente o de otro cliente.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Endpoint de configuración o entregas pendientes; retirar estático de la configuración y reiniciar.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible o capacidad global agotada.
+      summary: Eliminar o desactivar endpoint
+    get:
+      description: Devuelve id y URL de un endpoint activo del cliente autenticado.
+      operationId: getEndpoint
+      parameters:
+        - description: ID de endpoint.
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointRecord'
+          description: Detalles del endpoint.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Endpoint inexistente o de otro cliente.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Almacenamiento no disponible.
+      summary: Consultar endpoint
+  /api/v1/publish:
+    post:
+      description: Confirma evento, entrega y recibo idempotente atómicamente. La huella cubre bytes originales completos. Repetir devuelve el recibo inicial, no el estado actual. Retención elimina clave y evento juntos.
+      operationId: publishEvent
+      parameters:
+        - description: Clave idempotente por cliente de 1 a 128 bytes UTF-8. Se conserva mientras exista el evento. SHA-256 compara bytes originales completos.
+          in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            minLength: 1
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicationRequest'
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResult'
+          description: Evento aceptado y entrega encolada.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: JSON mal formado, campos ausentes o clave inválida.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Token ausente o inválido.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Recurso no disponible al cliente o endpoint desactivado.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: La clave del cliente se reutilizó con otros bytes de solicitud.
+        "413":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: El cuerpo completo supera 65536 bytes.
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Capacidad de cola pendiente del cliente agotada.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Límite global de cola/almacenamiento o base no disponible.
+      summary: Publicar evento
+  /healthz:
+    get:
+      description: Comprobación básica de proceso vivo para orquestadores.
+      operationId: livenessCheck
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    example: ok
+                    type: string
+                type: object
+          description: El proceso del servicio está activo.
+      security: []
+      summary: Sonda de proceso vivo
+  /metrics:
+    get:
+      description: Expone métricas operativas Prometheus en formato de texto estándar.
+      operationId: getMetrics
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Métricas Prometheus en text/plain.
+        "401":
+          description: Token de operador de métricas ausente o inválido.
+        "404":
+          description: Métricas deshabilitadas (token no configurado).
+        "500":
+          description: Falló la recolección; el handler Prometheus devuelve texto plano.
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+        - BearerMetricsAuth: []
+      summary: Métricas Prometheus
+  /readyz:
+    get:
+      description: Solo comprueba conexión SQLite con Ping; no demuestra progreso, escritura, espacio ni disponibilidad del receptor.
+      operationId: readinessCheck
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    example: ready
+                    type: string
+                type: object
+          description: El servicio responde y tiene conexión con almacenamiento.
+        "503":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conexión de almacenamiento no disponible.
+      security: []
+      summary: Sonda de disponibilidad
+components:
+  schemas:
+    AttemptRecord:
+      properties:
+        completed_unix_ms:
+          description: Fecha de finalización del intento en milisegundos desde época UNIX (UTC).
+          example: 1792081015272
+          type: integer
+        cycle:
+          description: Ciclo en el que se ejecutó el intento.
+          example: 1
+          type: integer
+        error:
+          description: Descripción sanitizada del error.
+          example: transport failure
+          type: string
+        http_status:
+          description: Estado HTTP recibido (0 ante error de red/timeout).
+          example: 503
+          type: integer
+        number:
+          description: Número secuencial global de finalización confirmada, no de cada envío iniciado.
+          example: 1
+          type: integer
+      type: object
+      required:
+        - number
+        - cycle
+        - http_status
+        - error
+        - completed_unix_ms
+    CreateEndpointRequest:
+      additionalProperties: false
+      properties:
+        allow_loopback:
+          default: false
+          description: Destino loopback de prueba; también requiere --allow-loopback-test del operador.
+          type: boolean
+        allow_loopback_test:
+          default: false
+          description: Alias compatible de allow_loopback; cualquiera en true activa la solicitud, sujeta al permiso del operador.
+          type: boolean
+        id:
+          description: ID ASCII personalizado de hasta 64 bytes. Vacío u omitido genera un ID.
+          example: payments-webhook
+          maxLength: 64
+          pattern: ^[A-Za-z0-9_-]*$
+          type: string
+        secret:
+          description: Secreto HMAC de 16 a 4096 bytes UTF-8 si se proporciona. Vacío u omitido genera secreto.
+          example: hrsec_sample_secret_key_1234567890abcdef
+          type: string
+        url:
+          description: URL del destino (HTTPS en puerto 443 requerido fuera del modo de prueba).
+          example: https://api.example.com/webhooks/payments
+          type: string
+      required:
+        - url
+      type: object
+    DeliveryResult:
+      properties:
+        attempts:
+          description: Total de finalizaciones confirmadas entre ciclos; puede omitir envíos interrumpidos.
+          example: 2
+          type: integer
+          minimum: 0
+        cycle:
+          description: Ciclo actual de intentos (empieza en 1).
+          example: 1
+          type: integer
+          minimum: 1
+        cycle_attempts:
+          description: Finalizaciones de intentos confirmadas en el ciclo actual.
+          example: 2
+          type: integer
+          minimum: 0
+        delivery_id:
+          example: e41fc76a5912448ca83d5bc781abcdef
+          type: string
+        error:
+          description: Mensaje de error si falló el último intento.
+          example: ""
+          type: string
+        event_id:
+          example: d82abf71b96a4bc2a981a6e76c123456
+          type: string
+        http_status:
+          description: Último estado HTTP registrado; cero sin estado de respuesta disponible.
+          example: 204
+          type: integer
+        status:
+          enum:
+            - PENDING
+            - RETRYING
+            - PROCESSING
+            - SUCCESS
+            - DEAD
+          example: SUCCESS
+          type: string
+      type: object
+      required:
+        - event_id
+        - delivery_id
+        - status
+        - attempts
+        - cycle
+        - cycle_attempts
+        - http_status
+    EndpointCreatedResponse:
+      properties:
+        id:
+          example: payments-webhook
+          type: string
+        secret:
+          description: Secreto HMAC asignado devuelto solo al crear. Los secretos dinámicos persistidos y backups contienen texto plano; protegerlos.
+          example: hrsec_sample_secret_key_1234567890abcdef
+          type: string
+        url:
+          example: https://api.example.com/webhooks/payments
+          type: string
+      type: object
+      required:
+        - id
+        - url
+        - secret
+    EndpointRecord:
+      properties:
+        id:
+          example: test
+          type: string
+        url:
+          example: https://api.example.com/webhooks
+          type: string
+      type: object
+      required:
+        - id
+        - url
+    ErrorResponse:
+      properties:
+        error:
+          example: invalid publication
+          type: string
+      type: object
+      required:
+        - error
+    PublicationRequest:
+      additionalProperties: false
+      description: Exactamente un objeto JSON. El cuerpo completo, incluido sobre y espacios, admite 65536 bytes. Se rechazan campos desconocidos.
+      properties:
+        endpoint_id:
+          description: Identificador del endpoint de destino.
+          example: invoice-webhook
+          type: string
+          minLength: 1
+        event_type:
+          description: Categoría del evento de 1 a 128 bytes UTF-8.
+          example: invoice.paid
+          type: string
+          minLength: 1
+        payload:
+          description: Cualquier valor JSON, incluidos null, array, escalar u objeto. Limitado por el tamaño del cuerpo completo.
+          example:
+            amount: 250
+            currency: USD
+            invoice_id: inv_10029
+      required:
+        - endpoint_id
+        - event_type
+        - payload
+      type: object
+    ReplayRecord:
+      properties:
+        actor:
+          description: Identificador del cliente autenticado que solicitó replay.
+          example: local-client
+          type: string
+        cycle:
+          description: Número del ciclo nuevo.
+          example: 2
+          type: integer
+        reason:
+          description: Motivo indicado al solicitar replay.
+          example: Destination recovered
+          type: string
+        requested_unix_ms:
+          description: Fecha de solicitud de replay en milisegundos UNIX UTC.
+          example: 1792081030000
+          type: integer
+      type: object
+      required:
+        - cycle
+        - actor
+        - reason
+        - requested_unix_ms
+    ReplayRequest:
+      additionalProperties: false
+      properties:
+        expected_cycle:
+          description: Ciclo actual esperado de la entrega DEAD (evita conflictos concurrentes).
+          example: 1
+          minimum: 1
+          type: integer
+        reason:
+          description: Motivo opcional de hasta 256 bytes UTF-8.
+          example: Destination service recovered from maintenance.
+          type: string
+      required:
+        - expected_cycle
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: Token Bearer de cliente (16 a 4096 bytes).
+      scheme: bearer
+      type: http
+    BearerMetricsAuth:
+      description: Token Bearer separado de operador para consultar métricas Prometheus.
+      scheme: bearer
+      type: http

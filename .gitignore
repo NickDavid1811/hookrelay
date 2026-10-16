@@ -1,0 +1,52 @@
+# Bases SQLite y archivos auxiliares
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite3-journal
+
+# Datos y respaldos locales
+/data/
+/backups/
+
+# Binarios compilados
+/bin/
+*.test
+
+# Credenciales locales
+.env
+.env.*
+!.env.example
+
+# Configuración propia; conservar ejemplos
+/config/*.json
+!/config/*.example.json
+
+# Caché Python
+__pycache__/
+*.py[cod]
+
+# Logs y resultados de pruebas
+*.log
+/coverage.out
+/coverage.html
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Datos temporales de medición
+/work/benchmarks/
+
+# Playground local y frontend
+/work/playground/
+/web/playground/node_modules/
+/web/playground/dist/
+/web/playground/*.tsbuildinfo

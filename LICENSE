@@ -1,0 +1,109 @@
+HookRelay Evaluation License and Commercial Use Restrictions
+
+Copyright (c) NickDavid1811. All rights reserved.
+
+1. Covered material and ownership
+
+"Software" means the HookRelay source code, executables and associated
+project documentation supplied with this license, including project-owned
+modifications and additions supplied under the same terms. "Copyright Holder"
+means NickDavid1811. Third-party material is governed separately as stated
+below. Ownership of the Software remains with its respective rights holders.
+
+This is a limited evaluation license. Rights not expressly granted are
+reserved. Public availability does not make the Software public domain or
+grant an unrestricted or open-source license.
+
+2. Permitted evaluation
+
+Subject to these conditions, you may view and inspect the Software and make
+private copies to build, run, test and technically assess it solely to
+evaluate the author's professional skills, a job application or the
+Software's suitability for a potential separately authorized engagement.
+You may make private modifications only as necessary for those tests.
+
+An employer, recruiter or evaluator may exercise this permission even when
+acting in a business or paid professional capacity, provided the Software
+is used solely for that evaluation and not to operate or deliver a product,
+service or business process. This is an evaluation exception, not permission
+for commercial deployment, resale or integration.
+
+Evaluation copies may be shared privately only with people participating
+in the same evaluation who receive this license and comply with its terms.
+Keep copyright and license notices intact. Do not publish modified copies,
+redistribute the Software outside that evaluation, sublicense it or grant
+others rights beyond those expressly provided here.
+
+3. Commercial use requires separate written permission
+
+Except for the evaluation expressly permitted in section 2, you may not
+use or exploit the Software, any covered portion or a modification of it
+for commercial purposes without the Copyright Holder's prior written
+authorization. Prohibited commercial purposes include:
+
+- Selling, renting, commercially licensing or distributing the Software.
+- Incorporating it into a commercial product or service, whether supplied
+  as source, an executable, a container, a library or another form.
+- Operating it to provide paid hosting, SaaS, managed services, consulting
+  deliverables or other services to customers.
+- Deploying or using it in production or business operations for commercial
+  advantage, revenue generation or cost savings, including internal use.
+- Providing it free of charge as part of a monetized offering, or through
+  an intermediary, to carry out an otherwise prohibited commercial use.
+
+Changing names, modifying code, extracting covered portions or combining
+them with other material does not expand the granted rights. Permission
+to evaluate is not permission to deploy, commercialize or distribute.
+Contact the Copyright Holder through the repository owner's account to
+request a separate agreement. Silence, public access or accepting feedback
+does not constitute written commercial authorization.
+
+4. Other reserved rights
+
+No general personal, educational, research, production or redistribution
+license is granted beyond the evaluation permission above. No right to use
+project names, logos or marks to imply affiliation or endorsement is granted.
+This license imposes no obligation to provide support, updates or any
+future version. Future versions supplied under these terms carry the same
+restrictions; separately agreed terms apply only to their stated scope.
+
+5. Third-party material and independent rights
+
+Dependencies and third-party code, assets and notices retain their own
+licenses. This license does not relicense them or grant rights the Copyright
+Holder does not control. Preserve any notices required by those licenses.
+
+Nothing here limits rights that cannot lawfully be excluded, rights
+provided by applicable hosting-platform terms, or permissions validly
+obtained under a separate agreement or another applicable license. Such
+independent rights do not expand the rights granted by this license.
+
+6. Compliance and termination
+
+The permissions in this license are conditional on compliance. They end
+if you exercise them outside their permitted scope or violate their
+conditions. Upon termination, stop activities relying on this license and
+delete copies and modifications held under it, except where retention or
+continued use is independently authorized by law or another valid grant.
+Termination does not affect accrued obligations or independent rights.
+
+7. Warranty and liability
+
+TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS PROVIDED
+"AS IS" AND "AS AVAILABLE", WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+NONINFRINGEMENT, ACCURACY, SECURITY OR UNINTERRUPTED OPERATION. TO THE SAME
+EXTENT, THE COPYRIGHT HOLDER AND CONTRIBUTORS ARE NOT LIABLE FOR CLAIMS,
+DAMAGES OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE, WHETHER
+IN CONTRACT, TORT OR OTHERWISE. THESE EXCLUSIONS DO NOT APPLY WHERE LAW
+DOES NOT PERMIT THEM.
+
+8. Interpretation
+
+If a provision is unenforceable, the remaining provisions continue to the
+extent permitted by law. A failure to enforce a condition does not itself
+waive it or grant additional rights. A separate written agreement signed
+or expressly accepted by the Copyright Holder may grant additional rights
+within its stated scope. An explanatory summary or translation does not
+expand these permissions. This English text is the authoritative version,
+subject to any mandatory applicable law.

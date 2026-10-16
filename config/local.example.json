@@ -1,0 +1,16 @@
+{
+  "clients": [
+    {
+      "id": "local-client",
+      "token_env": "HOOKRELAY_TOKEN",
+      "endpoints": [
+        {
+          "id": "test",
+          "url": "http://127.0.0.1:9090/webhook",
+          "secret_env": "HOOKRELAY_SECRET",
+          "allow_loopback_test": true
+        }
+      ]
+    }
+  ]
+}

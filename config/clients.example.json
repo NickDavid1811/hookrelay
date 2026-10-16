@@ -1,0 +1,26 @@
+{
+  "clients": [
+    {
+      "id": "billing",
+      "token_env": "BILLING_TOKEN",
+      "endpoints": [
+        {
+          "id": "invoice-events",
+          "url": "https://receiver.example.com/webhook",
+          "secret_env": "BILLING_WEBHOOK_SECRET"
+        }
+      ]
+    },
+    {
+      "id": "inventory",
+      "token_env": "INVENTORY_TOKEN",
+      "endpoints": [
+        {
+          "id": "stock-events",
+          "url": "https://stock.example.com/webhook",
+          "secret_env": "INVENTORY_WEBHOOK_SECRET"
+        }
+      ]
+    }
+  ]
+}

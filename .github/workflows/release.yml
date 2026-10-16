@@ -1,0 +1,102 @@
+name: Release & Delivery
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  docker-release:
+    name: Build & Publish Container Image (GHCR)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  binary-release:
+    name: Build Binaries & Publish GitHub Release
+    runs-on: ubuntu-24.04
+    env:
+      GOTOOLCHAIN: local
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Set up Go
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Compile and package release binaries
+        run: |
+          mkdir -p dist artifacts
+
+          # Linux amd64
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o dist/linux-amd64/dispatcher ./cmd/dispatcher
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o dist/linux-amd64/receiver ./cmd/receiver
+          tar -czf artifacts/hookrelay-${{ github.ref_name }}-linux-amd64.tar.gz -C dist/linux-amd64 dispatcher receiver -C "$GITHUB_WORKSPACE" LICENSE
+
+          # Linux arm64
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-w -s" -o dist/linux-arm64/dispatcher ./cmd/dispatcher
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-w -s" -o dist/linux-arm64/receiver ./cmd/receiver
+          tar -czf artifacts/hookrelay-${{ github.ref_name }}-linux-arm64.tar.gz -C dist/linux-arm64 dispatcher receiver -C "$GITHUB_WORKSPACE" LICENSE
+
+          # Darwin amd64 (macOS Intel)
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o dist/darwin-amd64/dispatcher ./cmd/dispatcher
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o dist/darwin-amd64/receiver ./cmd/receiver
+          tar -czf artifacts/hookrelay-${{ github.ref_name }}-darwin-amd64.tar.gz -C dist/darwin-amd64 dispatcher receiver -C "$GITHUB_WORKSPACE" LICENSE
+
+          # Darwin arm64 (macOS Apple Silicon)
+          CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags="-w -s" -o dist/darwin-arm64/dispatcher ./cmd/dispatcher
+          CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags="-w -s" -o dist/darwin-arm64/receiver ./cmd/receiver
+          tar -czf artifacts/hookrelay-${{ github.ref_name }}-darwin-arm64.tar.gz -C dist/darwin-arm64 dispatcher receiver -C "$GITHUB_WORKSPACE" LICENSE
+
+          # Generate SHA-256 Checksums
+          cd artifacts
+          sha256sum hookrelay-*.tar.gz > checksums.txt
+          cat checksums.txt
+
+      - name: Publish GitHub Release with assets
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "HookRelay ${{ github.ref_name }}" \
+            --generate-notes \
+            artifacts/hookrelay-*.tar.gz \
+            artifacts/checksums.txt

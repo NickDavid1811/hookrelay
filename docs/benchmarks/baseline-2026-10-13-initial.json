@@ -1,0 +1,236 @@
+{
+  "recorded_at_utc": "2026-10-13T21:38:31.892678+00:00",
+  "git_commit": "6f7266a374edb64e03b4827837ccb52bc9efb331",
+  "git_dirty": true,
+  "binary_sha256": {
+    "dispatcher": "86b78ae286e5ab82004bdab28d40e82e649777269f12c357897daaf7473c3aab",
+    "receiver": "60fcc11571a2cf5f254c82bae46d0ed7aa424f1de59f6668bd4b74787b16da7a"
+  },
+  "environment": {
+    "kernel": "7.2.9-arch1-1",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 5 7520U with Radeon Graphics",
+    "logical_cpus": 8,
+    "allowed_cpus": 8,
+    "memory": "MemTotal:       15668096 kB",
+    "go": "go version go1.27.2-X:nodwarf5 linux/amd64",
+    "python": "3.14.8",
+    "sqlite_driver": "modernc.org/sqlite v1.60.1",
+    "filesystem": "btrfs",
+    "data_directory": "<project>/work/benchmarks",
+    "durability": "WAL + synchronous FULL",
+    "receiver": "Go test receiver, HMAC verified, 204, no artificial delay; request logging enabled",
+    "http": "Python urllib, new connections; API loopback; outgoing keepalive disabled; no retries by load generator"
+  },
+  "measurement_notes": [
+    "Single run per concurrency; not a production SLO or maximum capacity.",
+    "Generator, receiver, dispatcher and sampler share one machine; caches and ambient load uncontrolled.",
+    "CPU percentages use one core=100%; RSS/queue peaks sampled, not absolute peaks.",
+    "Read-only SQLite queue polling every 0.1s adds observer load; periodic scrapes are additional load.",
+    "Go worker polls every 0.1s and sends one event per step; throughput includes this scheduling policy.",
+    "Drain completion sampled every 0.1s; end-to-end latency uses wall-clock milliseconds from SQLite.",
+    "Disk reports apparent size and st_blocks allocation, not write amplification nor complete Btrfs physical accounting.",
+    "Publication throughput is a short burst rate; sustained publication capacity not measured.",
+    "Scrapes after drain read a retained dataset; no inference about much larger datasets.",
+    "Generator provenance recorded after completion from the unchanged source used for this run. Later edits only improve metadata, CLI validation and assertion wording; the load procedure is unchanged."
+  ],
+  "cases": [
+    {
+      "publication_concurrency": 1,
+      "outbound_workers": 1,
+      "events": 200,
+      "payload_bytes_per_event": 1024,
+      "publication_body_bytes": 1087,
+      "publication_codes": {
+        "202": 200
+      },
+      "publication_seconds": 0.865612712004804,
+      "accepted_per_second": 231.050211285356,
+      "publication_http_latency": {
+        "count": 200,
+        "min_ms": 2.5273879946325906,
+        "mean_ms": 4.190584010066232,
+        "p50_ms": 3.8171679989318363,
+        "p95_ms": 6.879198997921776,
+        "p99_ms": 9.696432993223425,
+        "max_ms": 11.124291006126441
+      },
+      "drain_seconds_after_publication": 19.064425879994815,
+      "total_seconds_until_drained": 19.93003859199962,
+      "successes_per_second_until_drained": 10.035103498509264,
+      "delivery_publication_to_terminal_latency": {
+        "count": 200,
+        "min_ms": 23.0,
+        "mean_ms": 9533.609999999999,
+        "p50_ms": 9502.0,
+        "p95_ms": 18096.0,
+        "p99_ms": 18868.0,
+        "max_ms": 19060.0
+      },
+      "attempt_codes": {
+        "204": 200
+      },
+      "queue_sample_peak": 191,
+      "queue_sample_oldest_age_peak_seconds": 19.04674768447876,
+      "resource_sample_interval_seconds": 0.1,
+      "queue_sample_count": 198,
+      "resources": {
+        "dispatcher": {
+          "peak_rss_bytes": 29732864,
+          "cpu_seconds": 1.6099999999999999,
+          "mean_cpu_percent_one_core": 8.078258316299957
+        },
+        "receiver": {
+          "peak_rss_bytes": 19484672,
+          "cpu_seconds": 0.15,
+          "mean_cpu_percent_one_core": 0.7526327623881948
+        }
+      },
+      "scrape_interval_seconds": 1.0,
+      "scrape_during_load_latency": {
+        "count": 19,
+        "min_ms": 2.1030249990872107,
+        "mean_ms": 5.426311369152053,
+        "p50_ms": 5.4063620045781136,
+        "p95_ms": 9.933547000400722,
+        "p99_ms": 9.933547000400722,
+        "max_ms": 9.933547000400722
+      },
+      "scrape_after_drain_latency": {
+        "count": 20,
+        "min_ms": 2.340559003641829,
+        "mean_ms": 2.9148664500098675,
+        "p50_ms": 2.8517360042314976,
+        "p95_ms": 3.536051997798495,
+        "p99_ms": 3.769255999941379,
+        "max_ms": 3.769255999941379
+      },
+      "disk_before_shutdown": {
+        "db": {
+          "logical_bytes": 512000,
+          "allocated_bytes": 512000
+        },
+        "db-wal": {
+          "logical_bytes": 4165352,
+          "allocated_bytes": 4165632
+        },
+        "db-shm": {
+          "logical_bytes": 32768,
+          "allocated_bytes": 32768
+        },
+        "total_logical_bytes": 4710120,
+        "total_allocated_bytes": 4710400
+      },
+      "disk_after_graceful_shutdown": {
+        "db": {
+          "logical_bytes": 512000,
+          "allocated_bytes": 512000
+        },
+        "total_logical_bytes": 512000,
+        "total_allocated_bytes": 512000
+      },
+      "python_sqlite_version": "3.54.0",
+      "schema_version": 4,
+      "assertions": "all publications accepted; one finalized HTTP 204 attempt per event; integrity/FK valid"
+    },
+    {
+      "publication_concurrency": 8,
+      "outbound_workers": 1,
+      "events": 200,
+      "payload_bytes_per_event": 1024,
+      "publication_body_bytes": 1087,
+      "publication_codes": {
+        "202": 200
+      },
+      "publication_seconds": 0.5419502299992018,
+      "accepted_per_second": 369.037577491746,
+      "publication_http_latency": {
+        "count": 200,
+        "min_ms": 4.096676995686721,
+        "mean_ms": 21.046736365024117,
+        "p50_ms": 18.11502899363404,
+        "p95_ms": 43.876335999812,
+        "p99_ms": 55.68724800104974,
+        "max_ms": 60.20242100203177
+      },
+      "drain_seconds_after_publication": 19.463217117998283,
+      "total_seconds_until_drained": 20.005167347997485,
+      "successes_per_second_until_drained": 9.997416993365965,
+      "delivery_publication_to_terminal_latency": {
+        "count": 200,
+        "min_ms": 27.0,
+        "mean_ms": 9715.409999999998,
+        "p50_ms": 9677.0,
+        "p95_ms": 18407.0,
+        "p99_ms": 19189.0,
+        "max_ms": 19381.0
+      },
+      "attempt_codes": {
+        "204": 200
+      },
+      "queue_sample_peak": 194,
+      "queue_sample_oldest_age_peak_seconds": 19.374460458755493,
+      "resource_sample_interval_seconds": 0.1,
+      "queue_sample_count": 198,
+      "resources": {
+        "dispatcher": {
+          "peak_rss_bytes": 27328512,
+          "cpu_seconds": 1.59,
+          "mean_cpu_percent_one_core": 7.947946509725942
+        },
+        "receiver": {
+          "peak_rss_bytes": 16814080,
+          "cpu_seconds": 0.16,
+          "mean_cpu_percent_one_core": 0.7997933594692773
+        }
+      },
+      "scrape_interval_seconds": 1.0,
+      "scrape_during_load_latency": {
+        "count": 19,
+        "min_ms": 2.091571004712023,
+        "mean_ms": 5.691451421865311,
+        "p50_ms": 4.854048005654477,
+        "p95_ms": 11.818664999736939,
+        "p99_ms": 11.818664999736939,
+        "max_ms": 11.818664999736939
+      },
+      "scrape_after_drain_latency": {
+        "count": 20,
+        "min_ms": 3.550719004124403,
+        "mean_ms": 5.638926949904999,
+        "p50_ms": 5.183774002944119,
+        "p95_ms": 8.481734002998564,
+        "p99_ms": 8.563659001083579,
+        "max_ms": 8.563659001083579
+      },
+      "disk_before_shutdown": {
+        "db": {
+          "logical_bytes": 512000,
+          "allocated_bytes": 512000
+        },
+        "db-wal": {
+          "logical_bytes": 4152992,
+          "allocated_bytes": 4153344
+        },
+        "db-shm": {
+          "logical_bytes": 32768,
+          "allocated_bytes": 32768
+        },
+        "total_logical_bytes": 4697760,
+        "total_allocated_bytes": 4698112
+      },
+      "disk_after_graceful_shutdown": {
+        "db": {
+          "logical_bytes": 512000,
+          "allocated_bytes": 512000
+        },
+        "total_logical_bytes": 512000,
+        "total_allocated_bytes": 512000
+      },
+      "python_sqlite_version": "3.54.0",
+      "schema_version": 4,
+      "assertions": "all publications accepted; one finalized HTTP 204 attempt per event; integrity/FK valid"
+    }
+  ],
+  "generator_sha256": "f0d2a5960f3d970c6ff7b1e5b834e116ec6980d0f471e772224af0ab2fc71b6e"
+}

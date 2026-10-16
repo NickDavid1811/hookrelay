@@ -1,0 +1,13 @@
+.git
+.github
+bin/
+work/
+dist/
+node_modules/
+web/playground/dist/
+web/playground/node_modules/
+*.db
+*.db-wal
+*.db-shm
+*.log
+.env
