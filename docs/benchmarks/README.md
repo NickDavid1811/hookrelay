@@ -1,6 +1,6 @@
 # Historical benchmarks
 
-[Español](../es/benchmarks/README.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](../es/benchmarks/README.md) · Documentation review: 2026-10-16.
 
 These reports describe short local experiments on 2026-10-13, not current production capacity or a service-level objective (SLO). All six original JSON files are retained byte-for-byte and shared by both language editions.
 
@@ -14,7 +14,7 @@ Each stage has two runs with 200 events at publication concurrency 1 and 8: 800 
 
 ## How to read the evidence
 
-JSON preserves environment, parameters, source baseline, dirty flag, binary/generator hashes and build information where available. All runs used a dirty working tree: the commit/hash metadata does not reconstruct an exact source patch by itself. Original complete documentation is available in Git at `35c4373`.
+JSON preserves environment, parameters, source baseline, dirty flag, binary/generator hashes and build information where available. All runs used a dirty working tree: the commit/hash metadata does not reconstruct an exact source patch by itself. The earlier source history is not included in this new repository; these records do not make it reconstructible.
 
 Runs share one machine, lack controlled caches/temperature/background load, and use brief loads, sampled peaks and a polling observer that adds load. The reports explain scrape-sample limits and physical-disk accounting. Do not infer causality or a maximum rate from before/after differences.
 

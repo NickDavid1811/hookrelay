@@ -1,6 +1,6 @@
 # Operación y recuperación
 
-[English](../OPERATIONS.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../OPERATIONS.md) · Revisión documental: 2026-10-16.
 
 Esta guía describe procedimientos soportados y significado de señales. No certifica un despliegue productivo. Ejecutar comandos desde la raíz y adaptar rutas a la instalación elegida.
 

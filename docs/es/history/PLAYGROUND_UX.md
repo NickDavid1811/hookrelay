@@ -1,6 +1,6 @@
 # Revisión de UX/UI del laboratorio — 2026-10-14
 
-[English](../../history/PLAYGROUND_UX.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../../history/PLAYGROUND_UX.md) · Revisión documental: 2026-10-16.
 
 Objetivo: una persona debe poder publicar un ejemplo, explicar qué hace HookRelay y distinguir aceptación de entrega, sin conocer SQLite, HMAC, backoff o los códigos de estado internos.
 

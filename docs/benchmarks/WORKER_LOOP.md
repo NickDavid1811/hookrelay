@@ -1,6 +1,6 @@
 # Consecutive worker processing — 2026-10-13
 
-[Español](../es/benchmarks/WORKER_LOOP.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](../es/benchmarks/WORKER_LOOP.md) · Documentation review: 2026-10-16.
 
 Historical comparison. The dispatcher removed the 100 ms wait between available deliveries, retaining one instance/worker. It waited only without eligible work. At that revision retention was checked between sends/while idle; cancellation interrupted active HTTP and preserved recoverable claims if finalization was not confirmed. Schema v4, FULL, destination security, quotas and retry policy were unchanged.
 

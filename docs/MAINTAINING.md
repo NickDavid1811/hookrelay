@@ -1,6 +1,6 @@
 # Maintainer guide
 
-[Español](es/MAINTAINING.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/MAINTAINING.md) · Documentation review: 2026-10-16.
 
 Start with [architecture](ARCHITECTURE.md), [configuration](CONFIGURATION.md), [delivery contract](DELIVERY_CONTRACT.md) and [OpenAPI](openapi.yaml). This guide specifies how to change and check the implementation. Historical PASS results are in [history](history/SESSION.md); they are not fresh validation of a new change.
 
@@ -52,4 +52,4 @@ Startup quick_check is structural and not a full index/content or payload integr
 
 Update English and `docs/es/` in the same change. Keep protocol keys, code, identifiers and measurement files unchanged by translation. Link to one main explanation instead of copying it. Historical reports must identify baseline, environment, commands, results and limits; append corrections instead of presenting old results as current. All original benchmark JSON remains shared and unmodified.
 
-For this documentation revision, existing long session notes were consolidated and obsolete planning removed. Earlier complete files are recoverable with `git show 35c4373:docs/SESSION.md` and the corresponding path for other documents. This preserves provenance without making the old transcript the current operating guide.
+For this documentation revision, existing long session notes were consolidated and obsolete planning removed. This new repository contains consolidated records, not the earlier source history or complete original transcripts. Historical revision identifiers describe earlier work and are not checkout targets here. Record new validation against commits available in this repository.

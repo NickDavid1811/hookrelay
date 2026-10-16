@@ -1,6 +1,6 @@
 # Validation after hexagonal separation — 2026-10-13
 
-[Español](../es/benchmarks/HEXAGONAL.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](../es/benchmarks/HEXAGONAL.md) · Documentation review: 2026-10-16.
 
 Historical report. After restarting the session, loopback sockets were available and full make ci passed: format/modules/race/vet/build/HTTP smoke/failures/replay/SIGKILL/backup/tenants/capacity/retention. Tests were not changed to bypass network restrictions.
 

@@ -1,6 +1,6 @@
 # Glosario
 
-[English](../GLOSSARY.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../GLOSSARY.md) · Revisión documental: 2026-10-16.
 
 Los nombres de código, estados y claves no se traducen; esta tabla explica su significado.
 

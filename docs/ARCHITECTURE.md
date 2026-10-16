@@ -1,6 +1,6 @@
 # Architecture and data model
 
-[Español](es/ARCHITECTURE.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/ARCHITECTURE.md) · Documentation review: 2026-10-16.
 
 HookRelay is a modular Go monolith with ports and adapters. One dispatcher deployment owns a local SQLite database; a bounded pool of workers sends requests. Package boundaries are code responsibilities, not independently deployed services.
 

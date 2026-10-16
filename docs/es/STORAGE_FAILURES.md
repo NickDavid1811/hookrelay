@@ -1,6 +1,6 @@
 # Validación y recuperación ante fallos de almacenamiento
 
-[English](../STORAGE_FAILURES.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../STORAGE_FAILURES.md) · Revisión documental: 2026-10-16.
 
 La validación inicial utilizó la base `55d53f4`. La ampliación sobre `c660ce1` añade errores E/S e interrupción del WAL y corrige detección de corrupción al arrancar: ahora se comprueba estructura antes de migrar. No cambia el esquema v5 ni el contrato HTTP.
 

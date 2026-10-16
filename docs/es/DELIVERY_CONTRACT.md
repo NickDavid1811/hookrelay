@@ -1,6 +1,6 @@
 # Contrato del emisor y del receptor
 
-[English](../DELIVERY_CONTRACT.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../DELIVERY_CONTRACT.md) · Revisión documental: 2026-10-16.
 
 [OpenAPI](openapi.yaml) define las operaciones HTTP de entrada. Esta guía explica el comportamiento que deben respetar emisores y receptores. Los campos e identificadores son datos del protocolo y no cambian entre idiomas.
 

@@ -1,6 +1,6 @@
 # Documentación de HookRelay
 
-[English](../README.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../README.md) · Revisión documental: 2026-10-16.
 
 HookRelay recibe eventos mediante una API HTTP autenticada, guarda el trabajo de entrega en SQLite y envía webhooks firmados en segundo plano. Esta documentación explica la implementación, sus procedimientos operativos y la evidencia que delimita sus garantías.
 
@@ -8,6 +8,7 @@ HookRelay recibe eventos mediante una API HTTP autenticada, guarda el trabajo de
 
 | Tu objetivo | Lectura |
 | --- | --- |
+| Consultar tareas vigentes | [Backlog de ingeniería](BACKLOG.md) |
 | Consultar vocabulario técnico | [Glosario](GLOSSARY.md) |
 | Entender alcance y garantías | [Panorama del proyecto](CONTEXT_MASTER.md) |
 | Ejecutar un ejemplo local | [Primeros pasos](GETTING_STARTED.md) |
@@ -32,6 +33,6 @@ Las fuentes de implementación resuelven dudas sobre hechos: los handlers y la a
 
 ## Evidencia y mantenimiento
 
-Esta revisión reorganiza y contrasta la documentación con el código `35c4373`; no repite los experimentos históricos de carga, fallos, Docker o CI. Los resultados históricos conservan fechas, referencias de base y limitaciones. No implica certificación de producción ni garantías nuevas de rendimiento.
+Esta revisión reorganiza la documentación; no repite los experimentos históricos de carga, fallos, Docker o CI. Los resultados históricos conservan fechas, referencias de base y limitaciones. No implica certificación de producción ni garantías nuevas de rendimiento.
 
-Actualizar ambos idiomas al cambiar el comportamiento. Mantener una explicación principal por tema y enlazarla desde los demás documentos. Conservar las mediciones originales. Registrar comandos, revisión exacta, entorno y límites de cada evidencia nueva. El historial está consolidado y no es una transcripción literal; la documentación anterior completa permanece en Git en `35c4373`.
+Actualizar ambos idiomas al cambiar el comportamiento. Mantener una explicación principal por tema y enlazarla desde los demás documentos. Conservar las mediciones originales. Registrar comandos, revisión exacta, entorno y límites de cada evidencia nueva. El historial está consolidado y no es una transcripción literal. Este repositorio nuevo no incluye el historial fuente anterior.

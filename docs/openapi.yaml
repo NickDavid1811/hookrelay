@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  description: HookRelay accepts events atomically and dispatches signed webhooks using Go and SQLite. Delivery uses finite retry budgets and recoverable leases. Duplicate sends are possible; HTTP acceptance does not establish receiver business completion. Documentation reviewed on 2026-10-16 against code reference 35c4373.
+  description: HookRelay accepts events atomically and dispatches signed webhooks using Go and SQLite. Delivery uses finite retry budgets and recoverable leases. Duplicate sends are possible; HTTP acceptance does not establish receiver business completion. Documentation reviewed on 2026-10-16.
   title: HookRelay API
   version: 1.0.0
 servers:

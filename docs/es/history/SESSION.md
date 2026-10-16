@@ -1,8 +1,8 @@
 # Historial técnico — 2026-10-13 a 2026-10-15
 
-[English](../../history/SESSION.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../../history/SESSION.md) · Revisión documental: 2026-10-16.
 
-Este registro histórico consolidado no es especificación vigente ni lista activa de tareas. Restricciones y sugerencias anteriores pueden estar superadas. Las entradas originales completas se recuperan con `git show 35c4373:docs/SESSION.md`. El comportamiento actual está en [panorama](../CONTEXT_MASTER.md), [arquitectura](../ARCHITECTURE.md) y [mantenimiento](../MAINTAINING.md).
+Este registro histórico consolidado no es especificación vigente ni lista activa de tareas. Restricciones y sugerencias anteriores pueden estar superadas. Este repositorio nuevo no incluye el historial fuente anterior ni las entradas originales completas. El comportamiento actual está en [panorama](../CONTEXT_MASTER.md), [arquitectura](../ARCHITECTURE.md) y [mantenimiento](../MAINTAINING.md).
 
 ## 2026-10-13: base de entrega
 
@@ -81,4 +81,4 @@ Sobre `55d53f4`, nueve casos FULL/lectura/contención y dos ENOSPC verificaron r
 
 ## 2026-10-16: consolidación documental
 
-Se redactaron guías vigentes en inglés y español, separando evidencia histórica de instrucciones, reconciliando API y preservando archivos de medición. Este cambio editorial no implementa el plan de desarrollo anterior, publica release ni añade benchmark. Se retiraron propuestas obsoletas y notas de permisos/commits del contexto vigente; su texto completo permanece en Git.
+Se redactaron guías vigentes en inglés y español, separando evidencia histórica de instrucciones, reconciliando API y preservando archivos de medición. Este cambio editorial no implementa el plan de desarrollo anterior, publica release ni añade benchmark. Se retiraron propuestas obsoletas y notas de permisos/commits del contexto vigente; este repositorio nuevo no incluye su texto anterior completo.

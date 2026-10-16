@@ -1,6 +1,6 @@
 # Panorama y alcance del proyecto
 
-[English](../CONTEXT_MASTER.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../CONTEXT_MASTER.md) · Revisión documental: 2026-10-16.
 
 HookRelay es un servicio autohospedado de envío de webhooks y un proyecto de ingeniería backend. Recibe eventos, persiste el trabajo de entrega, envía solicitudes HTTP y registra resultados para investigar fallos y reenviar entregas agotadas.
 
@@ -38,3 +38,5 @@ La aptitud para producción requiere revisión independiente y evidencia del des
 El diseño actual mantiene un despliegue del dispatcher y SQLite local. Brokers, réplicas activas, transformaciones, conectores por proveedor, facturación, SSO, roles avanzados y portal completo de consumidores quedan fuera del alcance inicial. Control de tasa, reparto entre clientes, circuit breakers, rotación de secretos y búsqueda de entregas son extensiones posibles; no son garantías actuales ni compromisos de esta revisión documental.
 
 Este documento sustituye el contexto inicial que mezclaba propuestas y estado actual. Las decisiones y correcciones fechadas permanecen en el [historial técnico](history/SESSION.md). Por sí solo no autoriza desarrollo, despliegue o publicación.
+
+Las prioridades y criterios de aceptación vigentes están en el [backlog de ingeniería](BACKLOG.md).

@@ -1,6 +1,6 @@
 # Publisher and receiver contract
 
-[Español](es/DELIVERY_CONTRACT.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/DELIVERY_CONTRACT.md) · Documentation review: 2026-10-16.
 
 [OpenAPI](openapi.yaml) defines the inbound HTTP operations. This guide explains the behavior a publisher and receiver must preserve. Field names and identifiers are protocol data and are identical in both language editions.
 

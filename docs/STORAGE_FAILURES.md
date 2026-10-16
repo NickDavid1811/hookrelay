@@ -1,6 +1,6 @@
 # Storage failure validation and recovery
 
-[Español](es/STORAGE_FAILURES.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/STORAGE_FAILURES.md) · Documentation review: 2026-10-16.
 
 Initial validation used baseline `55d53f4`. The follow-up against `c660ce1` adds WAL I/O/interruption tests and fixes startup corruption detection: storage now runs a structural check before migrations. Schema v5 and HTTP contracts remain unchanged.
 

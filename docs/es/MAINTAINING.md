@@ -1,6 +1,6 @@
 # Guía de mantenimiento
 
-[English](../MAINTAINING.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../MAINTAINING.md) · Revisión documental: 2026-10-16.
 
 Comenzar por [arquitectura](ARCHITECTURE.md), [configuración](CONFIGURATION.md), [contrato](DELIVERY_CONTRACT.md) y [OpenAPI](openapi.yaml). Esta guía explica cómo modificar y verificar la implementación. Los PASS históricos están en el [historial](history/SESSION.md); no validan cambios nuevos.
 
@@ -52,4 +52,4 @@ quick_check de arranque es estructural; no audita completamente índices/conteni
 
 Actualizar inglés y `docs/es/` en el mismo cambio. No traducir claves del protocolo, código, identificadores ni archivos de medición. Enlazar una explicación principal en lugar de copiarla. Los informes históricos deben identificar base, entorno, comandos, resultados y límites; añadir correcciones sin presentar resultados antiguos como actuales. Los JSON originales son compartidos e inalterados.
 
-Esta revisión consolidó las notas extensas de sesiones y retiró planificación obsoleta. Se recuperan originales completos con `git show 35c4373:docs/SESSION.md` y la ruta correspondiente para otros documentos. Se conserva procedencia sin convertir la transcripción antigua en manual operativo vigente.
+Esta revisión consolidó las notas extensas de sesiones y retiró planificación obsoleta. Este repositorio nuevo contiene registros consolidados, no el historial fuente anterior ni las transcripciones originales completas. Los identificadores históricos describen trabajo anterior y no son revisiones disponibles aquí. Registrar las nuevas validaciones contra commits disponibles en este repositorio.

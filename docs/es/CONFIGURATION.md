@@ -1,6 +1,6 @@
 # Configuración
 
-[English](../CONFIGURATION.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../CONFIGURATION.md) · Revisión documental: 2026-10-16.
 
 Ejecutar comandos desde la raíz. `./bin/dispatcher --help` es la referencia del ejecutable; los flags se declaran en `cmd/dispatcher/main.go` y sus valores y validaciones en `internal/core/limits.go`.
 

@@ -1,6 +1,6 @@
 # Flow Lab UX review — 2026-10-14
 
-[Español](../es/history/PLAYGROUND_UX.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](../es/history/PLAYGROUND_UX.md) · Documentation review: 2026-10-16.
 
 Historical review. Goal: a new reader should publish an example, explain HookRelay and distinguish acceptance from delivery without first learning SQLite, HMAC, backoff or internal states.
 

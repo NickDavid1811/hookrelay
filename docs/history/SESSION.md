@@ -1,8 +1,8 @@
 # Engineering history — 2026-10-13 to 2026-10-15
 
-[Español](../es/history/SESSION.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](../es/history/SESSION.md) · Documentation review: 2026-10-16.
 
-This is a consolidated historical record, not the current specification or an active task list. Earlier constraints and next-step suggestions may have been superseded. Full original entries remain available with `git show 35c4373:docs/SESSION.md`. Current behavior is described in the [overview](../CONTEXT_MASTER.md), [architecture](../ARCHITECTURE.md) and [maintainer guide](../MAINTAINING.md).
+This is a consolidated historical record, not the current specification or an active task list. Earlier constraints and next-step suggestions may have been superseded. This new repository does not include the earlier source history or complete original entries. Current behavior is described in the [overview](../CONTEXT_MASTER.md), [architecture](../ARCHITECTURE.md) and [maintainer guide](../MAINTAINING.md).
 
 ## 2026-10-13: delivery foundation
 
@@ -81,4 +81,4 @@ Against `55d53f4`, nine deterministic FULL/read-only/contention cases and two re
 
 ## 2026-10-16: documentation consolidation
 
-Current guides were rewritten in English with a corresponding Spanish edition, dated evidence separated from operating instructions, API wording reconciled and the original measurement files retained. This editorial change does not implement the previously discussed development plan, publish a release or add a new benchmark. Old proposals and session-specific permission/commit-status notes were removed from the current context; their complete text remains in Git.
+Current guides were rewritten in English with a corresponding Spanish edition, dated evidence separated from operating instructions, API wording reconciled and the original measurement files retained. This editorial change does not implement the previously discussed development plan, publish a release or add a new benchmark. Old proposals and session-specific permission/commit-status notes were removed from the current context; the complete earlier text is not included in this new repository.

@@ -1,6 +1,6 @@
 # Benchmarks históricos
 
-[English](../../benchmarks/README.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../../benchmarks/README.md) · Revisión documental: 2026-10-16.
 
 Los informes describen experimentos locales breves del 2026-10-13, no capacidad productiva actual ni objetivo de nivel de servicio (SLO). Los seis JSON originales se conservan byte por byte y se comparten entre idiomas.
 
@@ -14,7 +14,7 @@ Cada etapa tiene dos pasadas de 200 eventos con concurrencia de publicación 1 y
 
 ## Interpretar la evidencia
 
-JSON conserva entorno, parámetros, base, estado modificado, hashes de binarios/generador e información de compilación cuando estaba disponible. Todas las pasadas tenían árbol modificado: commit/hashes no reconstruyen por sí solos el parche fuente exacto. La documentación original completa está en Git en `35c4373`.
+JSON conserva entorno, parámetros, base, estado modificado, hashes de binarios/generador e información de compilación cuando estaba disponible. Todas las pasadas tenían árbol modificado: commit/hashes no reconstruyen por sí solos el parche fuente exacto. Este repositorio nuevo no incluye el historial fuente anterior; estos registros no permiten reconstruirlo.
 
 Comparten equipo, no controlan cachés/temperatura/carga ajena y usan cargas breves, picos muestreados y un observador que añade trabajo. Los informes delimitan muestras de scrape y contabilidad física de disco. No inferir causalidad ni tasa máxima de diferencias antes/después.
 

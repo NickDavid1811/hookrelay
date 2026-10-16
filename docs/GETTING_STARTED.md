@@ -1,6 +1,6 @@
 # Getting started
 
-[Español](es/GETTING_STARTED.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/GETTING_STARTED.md) · Documentation review: 2026-10-16.
 
 Run commands from the repository root. For a visual introduction, use the [Flow Lab](PLAYGROUND.md). These examples use public local-only credentials and a receiver included in the repository.
 

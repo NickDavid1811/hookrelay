@@ -1,6 +1,6 @@
 # Configuration
 
-[Español](es/CONFIGURATION.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/CONFIGURATION.md) · Documentation review: 2026-10-16.
 
 Commands run from the repository root. `./bin/dispatcher --help` is the executable reference; flag declarations are in `cmd/dispatcher/main.go` and defaults/validation in `internal/core/limits.go`.
 

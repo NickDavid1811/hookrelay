@@ -1,6 +1,6 @@
 # Local baseline — 2026-10-13
 
-[Español](../es/benchmarks/BASELINE.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](../es/benchmarks/BASELINE.md) · Documentation review: 2026-10-16.
 
 Historical measurement; one worker and SQLite WAL/FULL. Four cases completed 800 events: two runs of 200 at publication concurrency 1 and 8. All publications returned 202 and each event had one finalized 204 attempt; no DEAD delivery. Integrity/foreign keys passed after shutdown. This is not an exactly-once guarantee.
 

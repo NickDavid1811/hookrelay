@@ -1,6 +1,6 @@
 # Laboratorio visual
 
-[English](../PLAYGROUND.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../PLAYGROUND.md) · Revisión documental: 2026-10-16.
 
 El laboratorio muestra publicaciones y entregas reales. `cmd/playground` inicia un dispatcher aislado, un receptor controlado y un servidor web. No consulta SQL directamente ni duplica reglas de entrega.
 

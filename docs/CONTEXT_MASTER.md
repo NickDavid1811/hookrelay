@@ -1,6 +1,6 @@
 # Project overview and scope
 
-[Español](es/CONTEXT_MASTER.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/CONTEXT_MASTER.md) · Documentation review: 2026-10-16.
 
 HookRelay is a self-hosted webhook dispatcher and a backend engineering project. It receives events, persists delivery work, sends HTTP requests and records outcomes so that failures can be inspected and exhausted deliveries can be replayed.
 
@@ -38,3 +38,5 @@ Production suitability still requires independent review and evidence for the ac
 Current design keeps one dispatcher deployment and local SQLite. Broker integration, multiple active replicas, transformations, provider-specific connectors, billing, SSO, advanced roles and a full consumer portal are outside the initial scope. Rate controls, tenant fairness, circuit breakers, secret rotation and richer delivery search are possible extensions, not existing guarantees or commitments in this documentation revision.
 
 This document replaces the initial mixed proposal/current-state context. Dated implementation decisions and corrections are retained in the [engineering history](history/SESSION.md). It does not authorize development, deployment or publication by itself.
+
+Current priorities and acceptance criteria are tracked in the [engineering backlog](BACKLOG.md).

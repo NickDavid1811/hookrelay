@@ -1,6 +1,6 @@
 # Glossary
 
-[Español](es/GLOSSARY.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/GLOSSARY.md) · Documentation review: 2026-10-16.
 
 Code names, states and keys remain unchanged; this table explains their meaning.
 

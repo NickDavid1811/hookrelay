@@ -1,6 +1,6 @@
 # Flow Lab
 
-[Español](es/PLAYGROUND.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/PLAYGROUND.md) · Documentation review: 2026-10-16.
 
 The Flow Lab is a local visual demonstration backed by real publications and deliveries. `cmd/playground` starts an isolated dispatcher, a controlled receiver and a web server. It does not read SQL directly or duplicate delivery rules.
 

@@ -1,6 +1,6 @@
 # Primeros pasos
 
-[English](../GETTING_STARTED.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../GETTING_STARTED.md) · Revisión documental: 2026-10-16.
 
 Ejecutar los comandos desde la raíz del repositorio. Para una introducción visual, usar el [laboratorio](PLAYGROUND.md). Los ejemplos utilizan credenciales públicas solo para uso local y el receptor incluido en el repositorio.
 

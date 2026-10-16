@@ -1,6 +1,6 @@
 # HookRelay documentation
 
-[Español](es/README.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/README.md) · Documentation review: 2026-10-16.
 
 HookRelay accepts events through an authenticated HTTP API, stores delivery work in SQLite and sends signed webhooks in the background. This documentation explains the implementation, its operating procedures and the evidence behind its limits.
 
@@ -8,6 +8,7 @@ HookRelay accepts events through an authenticated HTTP API, stores delivery work
 
 | Your goal | Read |
 | --- | --- |
+| Track current engineering work | [Current backlog](BACKLOG.md) |
 | Look up technical vocabulary | [Glossary](GLOSSARY.md) |
 | Understand scope and guarantees | [Project overview](CONTEXT_MASTER.md) |
 | Run a local example | [Getting started](GETTING_STARTED.md) |
@@ -32,6 +33,6 @@ Implementation sources resolve factual questions: handlers and application code 
 
 ## Evidence and maintenance
 
-This revision reorganizes and checks documentation against code reference `35c4373`; it does not rerun the historical load, fault, Docker or CI experiments. Historical results retain their dates, baseline references and limitations. No production certification or new performance guarantee is implied.
+This revision reorganizes documentation; it does not rerun the historical load, fault, Docker or CI experiments. Historical results retain their dates, baseline references and limitations. No production certification or new performance guarantee is implied.
 
-Update both languages when behavior changes. Keep one main explanation per topic and link to it elsewhere. Preserve raw measurements. Record commands, exact revision, environment and remaining limits for new evidence. The history is consolidated, not a verbatim transcript; the full earlier documentation remains in Git at `35c4373`.
+Update both languages when behavior changes. Keep one main explanation per topic and link to it elsewhere. Preserve raw measurements. Record commands, exact revision, environment and remaining limits for new evidence. The history is consolidated, not a verbatim transcript. Earlier source history is not included in this new repository.

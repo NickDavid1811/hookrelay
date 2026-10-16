@@ -1,6 +1,6 @@
 # Validación tras la separación hexagonal — 2026-10-13
 
-[English](../../benchmarks/HEXAGONAL.md) · Revisión documental: 2026-10-16. Referencia del código: `35c4373`.
+[English](../../benchmarks/HEXAGONAL.md) · Revisión documental: 2026-10-16.
 
 Informe histórico: las referencias a comportamiento actual y recomendaciones corresponden a la revisión medida, no al código actual. Consultar [índice y límites](README.md).
 

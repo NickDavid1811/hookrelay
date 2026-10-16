@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  description: HookRelay acepta eventos atómicamente y envía webhooks firmados con Go y SQLite. Usa intentos finitos y reservas recuperables. Puede duplicar envíos; aceptación HTTP no demuestra procesamiento de negocio. Documentación revisada el 2026-10-16 contra el código 35c4373.
+  description: HookRelay acepta eventos atómicamente y envía webhooks firmados con Go y SQLite. Usa intentos finitos y reservas recuperables. Puede duplicar envíos; aceptación HTTP no demuestra procesamiento de negocio. Documentación revisada el 2026-10-16.
   title: API de HookRelay
   version: 1.0.0
 servers:

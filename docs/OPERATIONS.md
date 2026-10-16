@@ -1,6 +1,6 @@
 # Operations and recovery
 
-[Español](es/OPERATIONS.md) · Documentation review: 2026-10-16. Code reference: `35c4373`.
+[Español](es/OPERATIONS.md) · Documentation review: 2026-10-16.
 
 This guide describes supported procedures and monitoring semantics. It is not a production deployment certification. Run commands from the repository root and adapt paths to the chosen installation.
 
